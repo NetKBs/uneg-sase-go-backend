@@ -1,4 +1,4 @@
-package models
+package user
 
 import "gorm.io/gorm"
 
@@ -6,4 +6,6 @@ type User struct {
 	gorm.Model
 	Username string `gorm:"unique"`
 	Password string
+	RoleId   uint
+	//Role     Role
 }

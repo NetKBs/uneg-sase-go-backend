@@ -1,17 +1,6 @@
 package middlewares
 
-import (
-	"fmt"
-	"net/http"
-	"os"
-	"time"
-
-	"github.com/NetKBs/uneg-sase-go-backend/api/models"
-	"github.com/NetKBs/uneg-sase-go-backend/initializers"
-	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
-)
-
+/*
 func RequireAuth(c *gin.Context) {
 	// Get the cookie off rq
 	tokenString, err := c.Cookie("Authorization")
@@ -38,7 +27,7 @@ func RequireAuth(c *gin.Context) {
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
 		// Check the exp
-		if float64(time.Now().Unix()) > claims["sub"].(float64) {
+		if float64(time.Now().Unix()) > claims["exp"].(float64) {
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 		// Find the user with token sub
@@ -58,4 +47,4 @@ func RequireAuth(c *gin.Context) {
 
 	// Continue
 	c.Next()
-}
+}*/

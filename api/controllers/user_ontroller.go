@@ -1,17 +1,6 @@
 package controllers
 
-import (
-	"net/http"
-	"os"
-	"time"
-
-	"github.com/NetKBs/uneg-sase-go-backend/api/models"
-	"github.com/NetKBs/uneg-sase-go-backend/initializers"
-	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
-	"golang.org/x/crypto/bcrypt"
-)
-
+/*
 func Singup(c *gin.Context) {
 	// Get the user/pass of req body
 	var body struct {
@@ -110,8 +99,4 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-func Validated(c *gin.Context) {
-	user, _ := c.Get("user")
-
-	c.JSON(http.StatusOK, gin.H{"message": user})
-}
+*/
