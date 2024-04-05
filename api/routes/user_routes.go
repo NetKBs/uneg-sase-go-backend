@@ -7,15 +7,24 @@ import (
 
 func SetupUsersRoutes(router *gin.Engine) {
 
-	userGroup := router.Group("/users")
+	usersGroup := router.Group("/users")
 	{
 
-		userGroup.GET("/")
+		usersGroup.GET("/")
 		//userGroup.POST("/signup", controllers.Singup)
 		//userGroup.POST("/login", controllers.Login)
 		//userGroup.GET("/validated", middlewares.RequireAuth, controllers.Validated)
 
 		//userGroup.POST("/roles/create", controllers.RoleCreate)
-		userGroup.POST("roles/create", user.Create)
+
+		rolesGroup := usersGroup.Group("/roles")
+		{
+			rolesGroup.POST("/create", user.Create)
+			rolesGroup.PUT("/update", user.Update)
+			rolesGroup.DELETE("/delete/:id", user.Delete)
+			rolesGroup.GET("/getall", user.GetAll)
+			rolesGroup.GET("/get/:id", user.Get)
+		}
+
 	}
 }

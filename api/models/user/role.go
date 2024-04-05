@@ -1,8 +1,8 @@
 package user
 
 type Role struct {
-	Id   uint   `gorm:"primaryKey"`
-	Name string `gorm:"unique"`
+	Id   uint   `gorm:"primaryKey" json:"id"`
+	Name string `gorm:"unique" json:"name"`
 }
 
 /*

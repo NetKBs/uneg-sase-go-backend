@@ -6,13 +6,29 @@ import (
 )
 
 type RoleService struct {
-	repository interfaces.RoleRepository
+	repository interfaces.IRoleRepository
 }
 
-func NewRoleService(repository interfaces.RoleRepository) *RoleService {
+func NewRoleService(repository interfaces.IRoleRepository) *RoleService {
 	return &RoleService{repository}
 }
 
 func (r *RoleService) Create(role user.Role) (user.Role, error) {
 	return r.repository.Create(role)
+}
+
+func (r *RoleService) Get(id uint) (user.Role, error) {
+	return r.repository.Get(id)
+}
+
+func (r *RoleService) GetAll() ([]user.Role, error) {
+	return r.repository.GetAll()
+}
+
+func (r *RoleService) Update(role user.Role) (user.Role, error) {
+	return r.repository.Update(role)
+}
+
+func (r *RoleService) Delete(id uint) error {
+	return r.repository.Delete(id)
 }
