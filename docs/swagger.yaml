@@ -1,4 +1,29 @@
-basePath: /api/v1
+basePath: /
+definitions:
+  models.Error:
+    properties:
+      error:
+        type: string
+    type: object
+  models.Messages:
+    properties:
+      message:
+        type: string
+    type: object
+  user.Role:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  user.RoleInputCreate:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -6,5 +31,120 @@ info:
     in the university
   title: UNEG Services API
   version: "1.0"
-paths: {}
+paths:
+  /users/roles/create:
+    post:
+      consumes:
+      - application/json
+      description: create a new role with a name
+      parameters:
+      - description: Role Input
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/user.RoleInputCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.Role'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: create new role
+      tags:
+      - roles
+  /users/roles/delete/{id}:
+    delete:
+      description: delete a role by id
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Messages'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: delete a role
+      tags:
+      - roles
+  /users/roles/get/{id}:
+    get:
+      description: get a role by id
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.Role'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: get a role
+      tags:
+      - roles
+  /users/roles/getall:
+    get:
+      description: return the data of all roles existing
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.Role'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: get all roles
+      tags:
+      - roles
+  /users/roles/update:
+    put:
+      consumes:
+      - application/json
+      description: update an existing role with a new name
+      parameters:
+      - description: Role Input
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/user.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.Role'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: update an existing role
+      tags:
+      - roles
 swagger: "2.0"

@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/NetKBs/uneg-sase-go-backend/api/models"
 	"github.com/NetKBs/uneg-sase-go-backend/api/models/user"
 	repository "github.com/NetKBs/uneg-sase-go-backend/api/repositories/user/sql"
 	service "github.com/NetKBs/uneg-sase-go-backend/api/services/user"
@@ -11,21 +12,21 @@ import (
 )
 
 // CreateRole godoc
-// @Summary Creates a new user role.
-// @Description Create a new user role.
-// @Accept json
-// @Produce json
-// @Param role body user.RoleInputCreate true "RoleInputCreate"
-// @Success 200 {object} user.Role
-// @Failure 400 {object} errorResponse
-// @Failure 404 {object} errorResponse
-// @Failure 500 {object} errorResponse
-// @Router /users/roles/create [post]
+//
+//	@summary		create new role
+//	@description	create a new role with a name
+//	@tags			roles
+//	@accept			json
+//	@produce		json
+//	@param role body user.RoleInputCreate true "Role Input"
+//	@success		200	{object} user.Role
+//	@failure		400	{object} models.Error
+//	@router			/users/roles/create [post]
 func Create(c *gin.Context) {
 	var dto user.RoleInputCreate
 
 	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
 		return
 	}
 
@@ -37,7 +38,7 @@ func Create(c *gin.Context) {
 	})
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
 		return
 	}
 
@@ -45,25 +46,22 @@ func Create(c *gin.Context) {
 }
 
 // UpdateRole godoc
-
-// UpdateRole godoc
-// @Summary Updates a user role.
-// @Description Updates a user role.
-// @Accept json
-// @Produce json
-// @Param role body user.RoleInputUpdate true "RoleInputUpdate"
-// @Success 200 {object} user.Role
-// @Failure 400 {object} errorResponse
-// @Failure 404 {object} errorResponse
-// @Failure 500 {object} errorResponse
-// @Router /users/roles/update [put]
-
+//
+//	@summary		update an existing role
+//	@description	update an existing role with a new name
+//	@tags			roles
+//	@accept			json
+//	@produce		json
+//	@param 			role body user.Role true "Role Input"
+//	@success		200	{object} user.Role
+//	@failure		400	{object} models.Error
+//	@router			/users/roles/update [put]
 func Update(c *gin.Context) {
 
 	var dto user.RoleInputUpdate
 
 	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
 		return
 	}
 
@@ -73,30 +71,29 @@ func Update(c *gin.Context) {
 	result, err := service.Update(user.Role(dto))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, result)
 }
 
-// Delete godoc
-// @Summary Delete a role by ID
-// @Description Delete a role by its ID
-// @Accept json
-// @Produce json
-// @Param id path int true "Role ID"
-// @Success 200 {object} gin.H{"message": "deleted"}
-// @Failure 400 {object} gin.H{"error": "id should be a number"}
-// @Failure 500 {object} gin.H{"error": "Internal Server Error"}
-// @Router /users/roles/update [delete]
-
+// DeleteRole godoc
+//
+//	@summary		delete a role
+//	@description	delete a role by id
+//	@tags			roles
+//	@produce		json
+//	@param 			id path int true "Role ID"
+//	@success		200	{object} models.Messages
+//	@failure		400	{object} models.Error
+//	@router			/users/roles/delete/{id} [delete]
 func Delete(c *gin.Context) {
 
 	id := c.Param("id")
 
 	if _, err := strconv.Atoi(id); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id should be a number"})
+		c.JSON(http.StatusBadRequest, models.Error{Error: "id should be a number"})
 		return
 	}
 
@@ -106,24 +103,23 @@ func Delete(c *gin.Context) {
 	service := service.NewRoleService(repo)
 
 	if err := service.Delete(uint(id_num)); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "deleted"})
+	c.JSON(http.StatusOK, models.Messages{Message: "deleted"})
 
 }
 
-// GetAll godoc
-// @Summary Get all roles
-// @Description Get all roles
-// @Accept json
-// @Produce json
-// @Success 200 {object} YourResultType
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/v1/roles [get]
-
+// GetAllRoles godoc
+//
+//	@summary		get all roles
+//	@description	return the data of all roles existing
+//	@tags			roles
+//	@produce		json
+//	@success		200	{object} user.Role
+//	@failure		400	{object} models.Error
+//	@router			/users/roles/getall [get]
 func GetAll(c *gin.Context) {
 	repo := &repository.RoleRepository{}
 	service := service.NewRoleService(repo)
@@ -131,31 +127,29 @@ func GetAll(c *gin.Context) {
 	result, err := service.GetAll()
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, result)
 }
 
-// Get godoc
-// @Summary Get a role by ID
-// @Description Get a role by its ID
-// @Accept json
-// @Produce json
-// @Param id path int true "Role ID"
-// @Success 200 {object} YourResultType
-// @Failure 400 {object} ErrorResponse
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/v1/roles/{id} [get]
-
+// GetRole godoc
+//
+//	@summary		get a role
+//	@description	get a role by id
+//	@tags			roles
+//	@produce		json
+//	@param 			id path int true "Role ID"
+//	@success		200	{object} user.Role
+//	@failure		400	{object} models.Error
+//	@router			/users/roles/get/{id} [get]
 func Get(c *gin.Context) {
 
 	id := c.Param("id")
 
 	if _, err := strconv.Atoi(id); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id should be a number"})
+		c.JSON(http.StatusBadRequest, models.Error{Error: "id should be a number"})
 		return
 	}
 
@@ -167,7 +161,7 @@ func Get(c *gin.Context) {
 	result, err := service.Get(uint(id_num))
 
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		c.JSON(http.StatusNotFound, models.Error{Error: err.Error()})
 		return
 	}
 
