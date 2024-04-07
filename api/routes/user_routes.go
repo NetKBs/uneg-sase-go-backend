@@ -17,13 +17,16 @@ func SetupUsersRoutes(router *gin.Engine) {
 
 		//userGroup.POST("/roles/create", controllers.RoleCreate)
 
+		usersGroup.POST("/create", user.CreateUser)
+		usersGroup.GET("/getall", user.GetAllUser)
+
 		rolesGroup := usersGroup.Group("/roles")
 		{
-			rolesGroup.POST("/create", user.Create)
-			rolesGroup.PUT("/update", user.Update)
-			rolesGroup.DELETE("/delete/:id", user.Delete)
-			rolesGroup.GET("/getall", user.GetAll)
-			rolesGroup.GET("/get/:id", user.Get)
+			rolesGroup.POST("/create", user.CreateRole)
+			rolesGroup.PUT("/update", user.UpdateRole)
+			rolesGroup.DELETE("/delete/:id", user.DeleteRole)
+			rolesGroup.GET("/getall", user.GetAllRole)
+			rolesGroup.GET("/get/:id", user.GetRole)
 		}
 
 	}
